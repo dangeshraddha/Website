@@ -1,0 +1,9 @@
+{
+  "name": "VYNTRA \u2013 Women Safety Platform",
+  "short_name": "VYNTRA",
+  "start_url": "./vintra.html",
+  "display": "standalone",
+  "background_color": "#0d0b15",
+  "theme_color": "#0d0b15",
+  "description": "Women safety platform with offline emergency queue and safety tools."
+}

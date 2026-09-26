@@ -1,0 +1,34 @@
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import auth from '../routes/auth.js';
+import emergency from '../routes/emergency.js';
+import contacts from '../routes/contacts.js';
+import location from '../routes/location.js';
+import journey from '../routes/journey.js';
+import checkin from '../routes/checkin.js';
+import evidence from '../routes/evidence.js';
+import incidents from '../routes/incidents.js';
+import notifications from '../routes/notifications.js';
+import sync from '../routes/sync.js';
+dotenv.config();
+const app=express();
+app.use(cors({origin:process.env.CORS_ORIGIN||'*'}));
+app.use(express.json({limit:'5mb'}));
+app.get('/api/health',(req,res)=>res.json({ok:true,service:'VYNTRA backend',version:'2.0'}));
+app.use('/api/auth',auth);
+app.use('/api/emergency',emergency);
+app.use('/api/contacts',contacts);
+app.use('/api/location',location);
+app.use('/api/journey',journey);
+app.use('/api/checkin',checkin);
+app.use('/api/evidence',evidence);
+app.use('/api/incidents',incidents);
+app.use('/api/notifications',notifications);
+app.use('/api/sync',sync);
+app.use((err,req,res,next)=>{console.error(err);res.status(500).json({message:'Server error'});});
+const port=process.env.PORT||5000;
+mongoose.connect(process.env.MONGODB_URI||'mongodb://127.0.0.1:27017/vyntra')
+.then(()=>app.listen(port,()=>console.log(`VYNTRA API running on ${port}`)))
+.catch(err=>{console.error('MongoDB connection failed:',err.message);process.exit(1);});
